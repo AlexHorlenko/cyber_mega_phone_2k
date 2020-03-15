@@ -28,6 +28,7 @@ window.onload = function() {
 		document.getElementById("extension").value = data.extension;
 		document.getElementById("accountHost").value = data.accountHost;
 		document.getElementById("connect").click();
+		document.getElementById("call").click();
 	})
 
 
@@ -382,8 +383,8 @@ window.onunload = function() {
 			<div style="display:block;background-color: white;  padding-top: 5px; padding-bottom: 5px;">
 				<span style="color: darkgrey;">&nbsp;&lt; </span><span>People </span><span id="peopleCount">(2)</span>
 			</div>
-			<video id="local" style="width:inherit;height:unset; display: block;" src="./content/test.webm" autoplay onclick="setMain(this)"></video>
-			<video id="remote" style="width:inherit;height:unset; display: block;" src="./content/test2.webm" autoplay onclick="setMain(this)"></video>
+			<video id="local" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
+			<video id="remote" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
 		</div>
 		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: white; margin-top: 15px; margin-left: 30px; ">
 			<p>Meeting time remaining</p>
