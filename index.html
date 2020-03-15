@@ -74,7 +74,7 @@ window.onload = function() {
 			alert("ws started");
 		};
 		ws.onmessage = function(event) {
-			document.getElementById("transcript").innerText = "test transcript";
+			document.getElementById("transcript").innerText = event.data;
 		};
 		ws.onerror = function (event) {
 			alert(error);
