@@ -191,3 +191,21 @@ video {
 .media-controls button:hover, .media-controls button:focus {
 	opacity: 0.5;
 }
+
+progress::-webkit-progress-bar {
+    border: 0;
+    height: 10px;
+    border-radius: 20px;
+}
+
+progress::-moz-progress-bar {
+    border: 0;
+    height: 10px;
+    border-radius: 20px;
+}
+
+progress::-webkit-progress-value {
+    border: 0;
+    height: 10px;
+    border-radius: 20px;
+}
