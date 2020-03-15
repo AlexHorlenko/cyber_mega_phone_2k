@@ -29,6 +29,7 @@ window.onload = function() {
 		document.getElementById("accountHost").value = data.accountHost;
 		document.getElementById("connect").click();
 		document.getElementById("call").click();
+		startWebSocket();
 	})
 
 
@@ -67,7 +68,7 @@ window.onload = function() {
 		return { "accountId": "301", "accountName": "Alex", "accountPassword": "301pass", "accountHost": location.hostname, "extension": "1"};
 	}
 
-	function startWebSocker() {
+	function startWebSocket() {
 		var ws = new WebSocket("wss://ast2.kiiro.tech/");
 		ws.onopen = function(e) {
 			alert("ws started");
@@ -374,7 +375,7 @@ window.onunload = function() {
 		<div class="audio" style="position: absolute; top: 85%; left: 40%; z-index: 3;">
 			<input type="image" src="./content/mute.png" id="muteAudio" class="muteAudio" value="false" style="width: 10%; opacity: 75%; outline: none;" onchange="muteAudio()" />
 			<input type="image" src="./content/camera off.png" id="muteVideo" class="muteVideo" value="false" style="width: 10%; opacity: 75%; outline: none;" onchange="muteVideo()" />
-			<input type="image" src="./content/end-call-icon-12.jpg" id="disconnect" class="finish" style="width: 10%; opacity: 75%; outline: none;" onclick="disconnect()" />
+			<input type="image" src="./content/end-call-icon-12.jpg" id="disconnect" class="finish" style="width: 10%; opacity: 75%; outline: none;" onclick="phone.disconnect()" />
 		</div>
 		<div id="main-video-container" style="width:95vw;height:95vh;z-index: 2;top:0">
 			<video id="main-video" style="width: 100vw; height: 100vh;object-fit: fill;" muted="true" autoplay="true"></video>
