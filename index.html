@@ -71,16 +71,16 @@ window.onload = function() {
 	function startWebSocket() {
 		var ws = new WebSocket("wss://ast2.kiiro.tech/");
 		ws.onopen = function(e) {
-			alert("ws started");
+			console.log("ws started");
 		};
 		ws.onmessage = function(event) {
+			console.log(event.data)
 			document.getElementById("transcript").innerText = event.data;
 		};
 		ws.onerror = function (event) {
-			alert(error);
+			console.error(error);
 		};
 	}
-
 
 	function createMediaControls(video) {
 		let controls = document.createElement("div");
