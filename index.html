@@ -21,17 +21,28 @@
 let phone;
 
 window.onload = function() {
-	document.getElementById("accountId").placeholder = "video";
-	document.getElementById("accountName").value = "";
+	fetchCallerDetails().then((data) => {
+		document.getElementById("accountId").value = data.accountId;
+		document.getElementById("accountName").value = data.accountName;
+		document.getElementById("accountPassword").value = data.accountPassword;
+		document.getElementById("extension").value = data.extension;
+		document.getElementById("accountHost").value = data.accountHost;
+		document.getElementById("connect").click();
+	})
+
+
+	
+	/*document.getElementById("accountId").placeholder = "video";
+	document.getElementById("accountName").value = "";2
 	document.getElementById("accountPassword").placeholder = "video";
 	document.getElementById("accountHost").placeholder = "localhost";
 	document.getElementById("accountRegister").checked = true;
-	document.getElementById("extension").placeholder = "video-conference";
+	document.getElementById("extension").placeholder = "video-conference";*/
 
-	document.getElementById("connect").value = "Connect";
+	/*document.getElementById("connect").value = "Connect";
 	document.getElementById("connect").disabled = false;
 	document.getElementById("call").value = "Call";
-	document.getElementById("call").disabled = true;
+	document.getElementById("call").disabled = true;*/
 
 	function findMediaView(parent, stream) {
 		let nodes = parent.childNodes;
@@ -44,6 +55,30 @@ window.onload = function() {
 
 		return null;
 	}
+
+	/*async function fetchCallerDetails() {
+		var response = await fetch('https://api.kiiro.tech/callerDetails')
+		return await response.json();	 
+		
+	}*/
+
+	async function fetchCallerDetails() {
+		return { "accountId": "301", "accountName": "Alex", "accountPassword": "301pass", "accountHost": location.hostname, "extension": "200"};
+	}
+
+	function startWebSocker() {
+		var ws = new WebSocket("wss://ast2.kiiro.tech/");
+		ws.onopen = function(e) {
+			alert("ws started");
+		};
+		ws.onmessage = function(event) {
+			document.getElementById("transcript").innerText = "test transcript";
+		};
+		ws.onerror = function (event) {
+			alert(error);
+		};
+	}
+
 
 	function createMediaControls(video) {
 		let controls = document.createElement("div");
@@ -80,6 +115,25 @@ window.onload = function() {
 				mute(video.srcObject, {video: this.getAttribute("state") == "mute"});
 			};
 			controls.appendChild(muteVideo);
+
+			/*var shareScreen = document.createElement("input");
+			shareScreen.type = "button";
+			shareScreen.value = "start sharing screen";
+			shareScreen.className = "screen-btn";
+			shareScreen.setAttribute("state", "stop");
+			shareScreen.onclick = function() {
+				let state = this.getAttribute("state");
+				this.setAttribute("state", state == "stop" ? "start" : "stop");
+				this.value = state + " sharing screen";
+				if (state == "start") {
+					var screenStream = navigator.mediaDevices.getDisplayMedia({});
+					
+				}
+				else if (state == "stop") {
+
+				}
+			};
+			controls.appendChild(shareScreen);*/
 
 			if (video.srcObject.local == false) {
 				let fullScreen = document.createElement("input");
@@ -240,6 +294,7 @@ window.onload = function() {
 		});
 
 		phone.handle("streamAdded", function (stream) {
+			if (stream.local)
 			document.getElementById("media-views").appendChild(createMediaView(stream));
 
 			document.getElementById("call").value = "Hangup";
@@ -281,16 +336,8 @@ window.onunload = function() {
 }; // window.onunload
 		</script>
 	</head>
-	<body>
-		<header>
-			<p><marquee behavior="alternate">Welcome to Cyber Mega Phone 2K Ultimate Dynamic Edition</marquee></p>
-		</header>
-		<div class="connection">
-			<input type="button" id="account" class="account" value="Account" onclick="accountShow()" />
-			<input type="button" id="connect" class="connect" value="Connect" />
-			<input type="button" id="call" class="call" value="Call" />
-		</div>
-		<div id="account-modal" class="account-modal">
+	<body style="margin: 0px;">
+		<div id="account-modal" class="account-modal" style="z-index: 2;">
 			<div class="account-content">
 				<span class="account-close" onclick="accountClose()">&times;</span>
 				<label>ID:</label>
@@ -310,9 +357,33 @@ window.onunload = function() {
 				<input type="text" id="extension"/>
 			</div>
 		</div>
-		<div id="calling"></div>
-		<div id="media-views" class="media-views"></div>
-		<div class="footer">&copy; 2017 Digium, Inc.</div>
+		<div class="connection" hidden>
+			<input type="button" id="account" class="account" value="Account" onclick="accountShow()" />
+			<input type="button" id="connect" class="connect" value="Connect" />
+			<input type="button" id="call" class="call" value="Call" />
+		</div>
+		<div class="audio" style="position: absolute; top: 85%; left: 40%; z-index: 3;">
+			<input type="image" src="./content/mute.png" id="muteAudio" class="muteAudio" value="false" style="width: 10%; opacity: 75%; outline: none;" onchange="muteAudio()" />
+			<input type="image" src="./content/camera off.png" id="muteVideo" class="muteVideo" value="false" style="width: 10%; opacity: 75%; outline: none;" onchange="muteVideo()" />
+			<input type="image" src="./content/end-call-icon-12.jpg" id="disconnect" class="finish" style="width: 10%; opacity: 75%; outline: none;" onclick="disconnect()" />
+		</div>
+		<div id="main-video-container" style="width:95vw;height:95vh;z-index: 2;top:0">
+			<video id="main-video" style="width: 100vw; height: 100vh;object-fit: fill;" autoplay="true" src="./content/test.webm"></video>
+		</div>
+		<div id="video-selector" style="width:15vw;position:fixed; bottom:0; right: 0;z-index: 3; float: right;">
+			<div style="display:block;background-color: white;  padding-top: 5px; padding-bottom: 5px;">
+				<span style="color: darkgrey;">&nbsp;&lt; </span><span>People </span><span id="peopleCount">(2)</span>
+			</div>
+			<video id="local" style="width:inherit;height:unset; display: block;" src="./content/test.webm" autoplay onclick="setMain(this)"></video>
+			<video id="remote" style="width:inherit;height:unset; display: block;" src="./content/test2.webm" autoplay onclick="setMain(this)"></video>
+		</div>
+		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: white; margin-top: 15px; margin-left: 30px; ">
+			<p>Meeting time remaining</p>
+			<progress max="100" value="2" style="height: 10px; border-radius: 20px;"></progress>
+		</div>
+		<div id="transcript-container" style="position: absolute; top:75%; left:50%;z-index:3;transform: translate(-50%, 50%); background-color:white; opacity: 70%;">
+			<p id=transcript style="font-size: large; margin-block-start: 0px; margin-block-end: 0px; margin:5px">What I think will be in transcript</p>
+		</div>
 		<script>
 FullScreen.prototype.request = function() {
 	if (this.is()) {
@@ -331,6 +402,18 @@ FullScreen.prototype.request = function() {
 
 	this.setData(true);
 };
+
+function setMain(element) {
+	var main = document.getElementById("main-video");
+	if (element.srcObject != null) {
+		main.srcObject = element.srcObject;
+		return;
+	}
+	if (element.src != null){
+		main.src = element.src;
+		return;
+	}
+}
 
 function accountShow() {
 	let modal = document.getElementById("account-modal");
