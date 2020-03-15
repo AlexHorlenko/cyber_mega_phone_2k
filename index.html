@@ -64,7 +64,7 @@ window.onload = function() {
 	}*/
 
 	async function fetchCallerDetails() {
-		return { "accountId": "301", "accountName": "Alex", "accountPassword": "301pass", "accountHost": location.hostname, "extension": "200"};
+		return { "accountId": "301", "accountName": "Alex", "accountPassword": "301pass", "accountHost": location.hostname, "extension": "1"};
 	}
 
 	function startWebSocker() {
@@ -377,7 +377,7 @@ window.onunload = function() {
 			<input type="image" src="./content/end-call-icon-12.jpg" id="disconnect" class="finish" style="width: 10%; opacity: 75%; outline: none;" onclick="disconnect()" />
 		</div>
 		<div id="main-video-container" style="width:95vw;height:95vh;z-index: 2;top:0">
-			<video id="main-video" style="width: 100vw; height: 100vh;object-fit: fill;" autoplay="true" src="./content/test.webm"></video>
+			<video id="main-video" style="width: 100vw; height: 100vh;object-fit: fill;" autoplay="true"></video>
 		</div>
 		<div id="video-selector" style="width:15vw;position:fixed; bottom:0; right: 0;z-index: 3; float: right;">
 			<div style="display:block;background-color: white;  padding-top: 5px; padding-bottom: 5px;">
