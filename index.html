@@ -296,7 +296,7 @@ window.onload = function() {
 			if (stream.local) {
 				var localVideo = document.getElementById("local");
 				localVideo.srcObject = stream;
-				//localVideo.muted = true;
+				localVideo.muted = true;
 			}
 			else {
 				var remoteVideo = document.getElementById("remote");
