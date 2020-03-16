@@ -74,8 +74,8 @@ window.onload = function() {
 			console.log("ws started");
 		};
 		ws.onmessage = function(event) {
-			console.log(event.data.transcript)
-			document.getElementById("transcript").innerText = event.data.transcript;
+			console.log(event.data)
+			document.getElementById("transcript").innerText = JSON.parse(event.data).transcript;
 		};
 	}
 
@@ -305,9 +305,11 @@ window.onload = function() {
 				let tracks = stream.getVideoTracks();
 
 				for (let i = 0; i < tracks.length; ++i) {
-					tracks[i].enabled = true;
-			}
-		}
+					tracks[i].enabled = true; 
+					}
+				}
+				var mainVideo = document.getElementById("main-video");
+				mainVideo.srcObject = remoteVideo.srcObject;
 			}
 			//document.getElementById("media-views").appendChild(createMediaView(stream));
 
@@ -390,7 +392,7 @@ window.onunload = function() {
 			<input type="image" src="./content/end-call-icon-12.jpg" id="disconnect" class="finish" style="width: 10%; opacity: 75%; outline: none;" onclick="phone.disconnect()" />
 		</div>
 		<div id="main-video-container" style="width:100vw;height:100vh;z-index: 2;top:0">
-			<video id="main-video" style="width: inherit; height: inherit; object-fit: cover" muted="true" autoplay="true"></video>
+			<video id="main-video" style="width: inherit; height: inherit; object-fit: cover" autoplay="true"></video>
 		</div>
 		<div id="video-selector" style="width:15vw;position:fixed; bottom:0; right: 0;z-index: 3; float: right;">
 			<div style="display:block;background-color: white;  padding-top: 5px; padding-bottom: 5px;">
