@@ -19,6 +19,7 @@
 		<script type="text/javascript">
 
 let phone;
+var counter = 1;
 
 window.onload = function() {
 	fetchCallerDetails().then((data) => {
@@ -299,11 +300,12 @@ window.onload = function() {
 				localVideo.muted = true;
 			}
 			else {
-				var remoteVideo = document.getElementById("remote");
-				if (remoteVideo.srcObject != undefined) {
-					remoteVideo = document.getElementById("remote-backup")
+				if ((counter % 2) == 0) {
+					var remoteVideo = document.getElementById("remote-2");
+				} else {
+					var remoteVideo = document.getElementById("remote-1");
 				}
-				
+				counter = counter + 1;
 				remoteVideo.srcObject = stream;
 				remoteVideo.onloadedmetadata = function() {
 				let tracks = stream.getVideoTracks();
@@ -403,8 +405,8 @@ window.onunload = function() {
 				<span style="color: darkgrey;">&nbsp;&lt; </span><span>People </span><span id="peopleCount">(2)</span>
 			</div>
 			<video id="local" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
-			<video id="remote" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
-			<video id="remote-backup" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
+			<video id="remote-1" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
+			<video id="remote-2" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
 		</div>
 		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: gray; margin-top: 10px; margin-left: 25px; padding: 5px; ">
 			<p>Meeting time remaining</p>
