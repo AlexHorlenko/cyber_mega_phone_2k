@@ -77,9 +77,6 @@ window.onload = function() {
 			console.log(event.data.transcript)
 			document.getElementById("transcript").innerText = event.data.transcript;
 		};
-		ws.onerror = function (error) {
-			console.warn(error);
-		};
 	}
 
 	function createMediaControls(video) {
@@ -304,6 +301,13 @@ window.onload = function() {
 			else {
 				var remoteVideo = document.getElementById("remote");
 				remoteVideo.srcObject = stream;
+				remoteVideo.onloadedmetadata = function() {
+				let tracks = stream.getVideoTracks();
+
+				for (let i = 0; i < tracks.length; ++i) {
+					tracks[i].enabled = true;
+			}
+		}
 			}
 			//document.getElementById("media-views").appendChild(createMediaView(stream));
 
