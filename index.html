@@ -78,7 +78,7 @@ window.onload = function() {
 			document.getElementById("transcript").innerText = event.data.transcript;
 		};
 		ws.onerror = function (error) {
-			console.error(error);
+			console.warn(error);
 		};
 	}
 
@@ -395,7 +395,7 @@ window.onunload = function() {
 			<video id="local" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
 			<video id="remote" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
 		</div>
-		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: white; margin-top: 10px; margin-left: 25px; padding: 5px; background-color: gray; opacity: 80%;">
+		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: gray; margin-top: 10px; margin-left: 25px; padding: 5px; ">
 			<p>Meeting time remaining</p>
 			<progress max="100" value="10" style="height: 10px; border-radius: 20px;"></progress>
 		</div>
