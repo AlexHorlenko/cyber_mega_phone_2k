@@ -28,7 +28,7 @@ window.onload = function() {
 		document.getElementById("extension").value = data.extension;
 		document.getElementById("accountHost").value = data.accountHost;
 		document.getElementById("connect").click();
-		document.getElementById("call").click();
+		setTimeout(() => document.getElementById("call").click(), 500);
 		startWebSocket();
 	})
 
