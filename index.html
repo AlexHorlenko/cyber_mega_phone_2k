@@ -74,10 +74,10 @@ window.onload = function() {
 			console.log("ws started");
 		};
 		ws.onmessage = function(event) {
-			console.log(event.data)
-			document.getElementById("transcript").innerText = event.data;
+			console.log(event.data.transcript)
+			document.getElementById("transcript").innerText = event.data.transcript;
 		};
-		ws.onerror = function (event) {
+		ws.onerror = function (error) {
 			console.error(error);
 		};
 	}
@@ -312,7 +312,15 @@ window.onload = function() {
 		});
 
 		phone.handle("streamRemoved", function (stream) {
-			removeMediaView(document.getElementById("media-views"), stream);
+			if (stream.local)
+			{
+				console.log("stopping local video");
+			}
+			else
+			{
+				console.log("stopping remote video");
+			}
+			//removeMediaView(document.getElementById("media-views"), stream);
 		});
 
 		phone.connect();
@@ -377,8 +385,8 @@ window.onunload = function() {
 			<input type="image" src="./content/camera off.png" id="muteVideo" class="muteVideo" value="false" style="width: 10%; opacity: 75%; outline: none;" onchange="muteVideo()" />
 			<input type="image" src="./content/end-call-icon-12.jpg" id="disconnect" class="finish" style="width: 10%; opacity: 75%; outline: none;" onclick="phone.disconnect()" />
 		</div>
-		<div id="main-video-container" style="width:95vw;height:95vh;z-index: 2;top:0">
-			<video id="main-video" style="width: 100vw; height: 100vh;object-fit: fill;" muted="true" autoplay="true"></video>
+		<div id="main-video-container" style="width:100vw;height:100vh;z-index: 2;top:0">
+			<video id="main-video" style="width: inherit; height: inherit; object-fit: cover" muted="true" autoplay="true"></video>
 		</div>
 		<div id="video-selector" style="width:15vw;position:fixed; bottom:0; right: 0;z-index: 3; float: right;">
 			<div style="display:block;background-color: white;  padding-top: 5px; padding-bottom: 5px;">
@@ -387,7 +395,7 @@ window.onunload = function() {
 			<video id="local" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
 			<video id="remote" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
 		</div>
-		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: white; margin-top: 15px; margin-left: 30px; ">
+		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: white; margin-top: 10px; margin-left: 25px; padding: 5px; background-color: gray; opacity: 80%;">
 			<p>Meeting time remaining</p>
 			<progress max="100" value="10" style="height: 10px; border-radius: 20px;"></progress>
 		</div>
