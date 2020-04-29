@@ -66,7 +66,10 @@ window.onload = function() {
 	}*/
 
 	async function fetchCallerDetails() {
-		return { "accountId": "301", "accountName": "Alex", "accountPassword": "301pass", "accountHost": location.hostname, "extension": "1"};
+		return { "accountId": "301", "accountName": "Alex1", "accountPassword": "301pass", "accountHost": "ast2.kiiro.tech", "extension": "1"};
+		//{ "accountId": "302", "accountName": "Alex2", "accountPassword": "302pass", "accountHost": location.hostname, "extension": "1"};
+		//{ "accountId": "303", "accountName": "Alex3", "accountPassword": "303pass", "accountHost": location.hostname, "extension": "1"};
+		//{ "accountId": "304", "accountName": "Alex4", "accountPassword": "304pass", "accountHost": location.hostname, "extension": "1"};
 	}
 
 	function startWebSocket() {
@@ -294,12 +297,20 @@ window.onload = function() {
 		});
 
 		phone.handle("streamAdded", function (stream) {
+			console.log("stream added raised for " + stream.id)
 			if (stream.local) {
 				var localVideo = document.getElementById("local");
 				localVideo.srcObject = stream;
 				localVideo.muted = true;
 			}
 			else {
+				if (stream.getAudioTracks().length > 0){
+					var remoteAudio = document.getElementById("main-audio");
+					remoteAudio.srcObject = stream;
+					return;
+				}
+				
+
 				if ((counter % 2) == 0) {
 					var remoteVideo = document.getElementById("remote-2");
 				} else {
@@ -399,14 +410,15 @@ window.onunload = function() {
 		</div>
 		<div id="main-video-container" style="width:100vw;height:100vh;z-index: 2;top:0">
 			<video id="main-video" style="width: inherit; height: inherit; object-fit: cover" autoplay="true"></video>
+			<video id="main-audio" autoplay="true"></video>
 		</div>
 		<div id="video-selector" style="width:15vw;position:fixed; bottom:0; right: 0;z-index: 3; float: right;">
 			<div style="display:block;background-color: white;  padding-top: 5px; padding-bottom: 5px;">
 				<span style="color: darkgrey;">&nbsp;&lt; </span><span>People </span><span id="peopleCount">(2)</span>
 			</div>
-			<video id="local" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
-			<video id="remote-1" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
-			<video id="remote-2" style="width:inherit;height:unset; display: block;" autoplay onclick="setMain(this)"></video>
+			<video id="local" style="width:inherit;height:unset; display: block;" autoplay="true" onclick="setMain(this)"></video>
+			<video id="remote-1" style="width:inherit;height:unset; display: block;" autoplay="true" onclick="setMain(this)"></video>
+			<video id="remote-2" style="width:inherit;height:unset; display: block;" autoplay="true" onclick="setMain(this)"></video>
 		</div>
 		<div id="meeting-timer-container" style="position: absolute; top: 0; left: 0; z-index:3; color: gray; margin-top: 10px; margin-left: 25px; padding: 5px; ">
 			<p>Meeting time remaining</p>
